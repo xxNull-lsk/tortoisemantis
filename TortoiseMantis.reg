@@ -14,13 +14,13 @@ REGEDIT4
 "ThreadingModel"="Both"
 "Class"="TortoiseMantis.Plugin"
 "Assembly"="TortoiseMantis, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null"
-"RuntimeVersion"="v4.0.30319"
+"RuntimeVersion"="v2.0.50727"
 "CodeBase"="file:///C:/Documents and Settings/Andi/My Documents/Visual Studio 2010/Projects/TortoiseMantis/bin/Release/TortoiseMantis.dll"
 
 [HKEY_CLASSES_ROOT\CLSID\{F25B6B8F-1BA0-4BCA-A809-0C0B6F4A0CED}\InprocServer32\0.0.0.1]
 "Class"="TortoiseMantis.Plugin"
 "Assembly"="TortoiseMantis, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null"
-"RuntimeVersion"="v4.0.30319"
+"RuntimeVersion"="v2.0.50727"
 "CodeBase"="file:///C:/Documents and Settings/Andi/My Documents/Visual Studio 2010/Projects/TortoiseMantis/bin/Release/TortoiseMantis.dll"
 
 [HKEY_CLASSES_ROOT\CLSID\{F25B6B8F-1BA0-4BCA-A809-0C0B6F4A0CED}\ProgId]
