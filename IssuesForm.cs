@@ -34,14 +34,14 @@ namespace TortoiseMantis
 {
     internal partial class IssuesForm : Form
     {
-        private ObjectRef[] statusEnum;
-        private AccountData[] accountData;
         private IssueHeaderData[] issueHeaders;
         private IssueHeaderData selectedIssue;
         private String myAccountID;
         private ConnectionSettings cs;
         private String searchString;
         private IssuesListColumnSorter issuesListColumnSorter;
+        private IDictionary<string, string> userNameMapping;
+        private IDictionary<string, string> statusMapping;
         private IDictionary<string, Color> statusColorMapping;
 
         public IssuesForm(Plugin plugin, ConnectionSettings cs)
@@ -50,17 +50,15 @@ namespace TortoiseMantis
             issuesListColumnSorter = new IssuesListColumnSorter();
             issuesList.ListViewItemSorter = (IComparer)issuesListColumnSorter;
             this.Text += String.Format(" v{0}", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
-            statusEnum = null;
             issueHeaders = null;
             selectedIssue = null;
-            accountData = null;
             myAccountID = null;
+            userNameMapping = new Dictionary<string, string>();
+            statusMapping = new Dictionary<string, string>();
             this.cs = cs;
             searchString = String.Empty;
             plugin.StatusUpdated += new Plugin.StatusUpdatedHandler(plugin_StatusUpdated);
-
             InitializeStatusColorMapping();
-
         }
 
         void plugin_StatusUpdated(string status)
@@ -77,22 +75,30 @@ namespace TortoiseMantis
 
         public void SetStatusMappings(ObjectRef[] statusEnum)
         {
-            this.statusEnum = statusEnum;
+            statusMapping.Clear();
+            IEnumerator e = statusEnum.GetEnumerator();
+            while (e.MoveNext())
+            {
+                ObjectRef status = (ObjectRef)e.Current;
+                statusMapping.Add(status.id, status.name);
+            }
+            ListIssues();
         }
 
         public void SetAccountData(AccountData[] accountData)
         {
-            this.accountData = accountData;
+            userNameMapping.Clear();
             IEnumerator e = accountData.GetEnumerator();
             while (e.MoveNext()) 
             {
                 AccountData account = (AccountData)e.Current;
+                userNameMapping.Add(account.id, account.name);
                 if (account.name == cs.Username)
                 {
-                    myAccountID = account.id;
-                    return;
+                    this.myAccountID = account.id;
                 }
             }
+            ListIssues();
         }
 
         public void SetIssueHeaderData(IssueHeaderData[] issueHeaders)
@@ -137,13 +143,13 @@ namespace TortoiseMantis
                     ListViewItem item = new ListViewItem(issueHeaderData.id);
                     //item.UseItemStyleForSubItems = false; // allow coloring of just status
                     String owner = issueHeaderData.handler;
-                    String statusString = getStatusString(issueHeaderData.status);
+                    String statusString = GetStatusString(issueHeaderData.status);
                     if (owner != null)
                     {
                         statusString += String.Format(" ({0})", GetUserName(issueHeaderData.handler));
                     }
                     ListViewItem.ListViewSubItem status = item.SubItems.Add(statusString);
-                    item.BackColor = getStatusColor(getStatusString(issueHeaderData.status));
+                    item.BackColor = getStatusColor(GetStatusString(issueHeaderData.status));
                     item.SubItems.Add(issueHeaderData.summary);
                     item.Tag = issueHeaderData;
                     issuesList.Items.Add(item);
@@ -168,45 +174,15 @@ namespace TortoiseMantis
 
         private String GetUserName(string userid)
         {
-            if (accountData == null)
-            {
-                return userid;
-            }
-            else
-            {
-                IEnumerator e = accountData.GetEnumerator();
-                while (e.MoveNext())
-                {
-                    // TODO: make O(log n)
-                    AccountData account = (AccountData)e.Current;
-                    if (account.id == userid)
-                    {
-                        return account.name;
-                    }
-                }
-            }
+            if (userNameMapping.ContainsKey(userid))
+                return userNameMapping[userid];
             return "unknown";
         }
 
-        private String getStatusString(string statusCode)
+        private String GetStatusString(string statusCode)
         {
-            if (statusEnum == null)
-            {
-                return statusCode;
-            }
-            else
-            {
-                IEnumerator e = statusEnum.GetEnumerator();
-                while (e.MoveNext())
-                {
-                    // TODO: make O(log n)
-                    ObjectRef status = (ObjectRef)e.Current;
-                    if (status.id == statusCode)
-                    {
-                        return status.name;
-                    }
-                }
-            }
+            if (statusMapping.ContainsKey(statusCode))
+                return statusMapping[statusCode];
             return "unknown";
         }
 
