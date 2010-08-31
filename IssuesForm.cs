@@ -42,13 +42,13 @@ namespace TortoiseMantis
         private ConnectionSettings cs;
         private String searchString;
         private IssuesListColumnSorter issuesListColumnSorter;
-
+        private IDictionary<string, Color> statusColorMapping;
 
         public IssuesForm(Plugin plugin, ConnectionSettings cs)
         {
             InitializeComponent();
             issuesListColumnSorter = new IssuesListColumnSorter();
-            issuesList.ListViewItemSorter = (IComparer) issuesListColumnSorter;
+            issuesList.ListViewItemSorter = (IComparer)issuesListColumnSorter;
             this.Text += String.Format(" v{0}", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
             statusEnum = null;
             issueHeaders = null;
@@ -58,6 +58,9 @@ namespace TortoiseMantis
             this.cs = cs;
             searchString = String.Empty;
             plugin.StatusUpdated += new Plugin.StatusUpdatedHandler(plugin_StatusUpdated);
+
+            InitializeStatusColorMapping();
+
         }
 
         void plugin_StatusUpdated(string status)
@@ -207,35 +210,23 @@ namespace TortoiseMantis
             return "unknown";
         }
 
-        // TODO: make work on code
+        private void InitializeStatusColorMapping()
+        {
+            statusColorMapping = new Dictionary<string, Color>();
+            statusColorMapping.Add("new", Color.FromArgb(0xfc, 0xbd, 0xbd));
+            statusColorMapping.Add("feedback", Color.FromArgb(0xe3, 0xb7, 0xeb)); 
+            statusColorMapping.Add("acknowledged", Color.FromArgb(0xff, 0xcd, 0x85));
+            statusColorMapping.Add("confirmed", Color.FromArgb(0xff, 0xf4, 0x94));
+            statusColorMapping.Add("assigned", Color.FromArgb(0xc2, 0xdf, 0xff));
+            statusColorMapping.Add("resolved", Color.FromArgb(0xd2, 0xf5, 0xb0));
+            statusColorMapping.Add("closed", Color.FromArgb(0xc9, 0xcc, 0xc4));
+        }
+        
         private Color getStatusColor(string status)
         {
-            Color color = Color.White;
-            switch (status)
-            {
-                case "new":
-                    color = Color.FromArgb(0xfc, 0xbd, 0xbd);
-                    break;
-                case "feedback":
-                    color = Color.FromArgb(0xe3, 0xb7, 0xeb); 
-                    break;
-                case "acknowledged":
-                    color = Color.FromArgb(0xff, 0xcd, 0x85); 
-                    break;
-                case "confirmed":
-                    color = Color.FromArgb(0xff, 0xf4, 0x94); 
-                    break;
-                case "assigned":
-                    color = Color.FromArgb(0xc2, 0xdf, 0xff); 
-                    break;
-                case "resolved":
-                    color = Color.FromArgb(0xd2, 0xf5, 0xb0); 
-                    break;
-                case "closed":
-                    color = Color.FromArgb(0xc9, 0xcc, 0xc4); 
-                    break;
-            }
-            return color;
+            if (statusColorMapping.ContainsKey(status))
+                return statusColorMapping[status];
+            return Color.White;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
