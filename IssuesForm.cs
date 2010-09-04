@@ -144,7 +144,7 @@ namespace TortoiseMantis
                     //item.UseItemStyleForSubItems = false; // allow coloring of just status
                     String owner = issueHeaderData.handler;
                     String statusString = GetStatusString(issueHeaderData.status);
-                    if (owner != null)
+                    if (owner != null && !this.radioButtonMyIssues.Checked)
                     {
                         statusString += String.Format(" ({0})", GetUserName(issueHeaderData.handler));
                     }
