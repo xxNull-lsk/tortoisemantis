@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IIssuesDisplay.cs" />
     <Compile Include="IssuesListColumnSorter.cs" />
     <Compile Include="ConnectionSettings.cs" />
     <Compile Include="IssuesForm.cs">

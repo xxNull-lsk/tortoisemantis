@@ -32,7 +32,7 @@ using TortoiseMantis.MantisConnectReference;
 
 namespace TortoiseMantis
 {
-    internal partial class IssuesForm : Form
+    internal partial class IssuesForm : Form, IIssuesDisplay
     {
         private IssueHeaderData[] issueHeaders;
         private IssueHeaderData selectedIssue;

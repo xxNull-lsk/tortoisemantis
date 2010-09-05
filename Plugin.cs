@@ -40,7 +40,7 @@ namespace TortoiseMantis
     public sealed class Plugin : IBugTraqProvider
     {
 
-        private IssuesForm form;
+        private IIssuesDisplay form;
         private MantisConnectPortTypeClient client;
         private ConnectionSettings cs;
         private bool connectionErrorReported;
@@ -67,7 +67,8 @@ namespace TortoiseMantis
         {
             connectionErrorReported = false;
             cs = new ConnectionSettings(parameters);
-            form = new IssuesForm(this, cs);
+            IssuesForm form = new IssuesForm(this, cs);
+            this.form = form;
 
             // WTF does this take so long?
             BasicHttpBinding binding = new BasicHttpBinding();
