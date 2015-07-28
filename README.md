@@ -43,19 +43,19 @@ Installation from binary
 1. Extract files to a folder, e.g. C:\Program Files\TortoiseMantis  
 2. adjust path in TortoiseMantis.reg accordingly and merge the registry file (double click)  
 3. TortoiseSVN / right click / Settings / Hook Scripts / Issue Tracker Integration  
-* Click add and fill form.   
-![](fileSetting.png)  
-   Sample configuration line: 
-url:http://127.0.0.1/bugs-test/api/soap/mantisconnect.php username:foouser password:foopass
-
-* Add global setting
-![](setting.png)
+  - Add driectory setting  
+ Click add and fill form.Sample configuration line:  
+**url:http://127.0.0.1/bugs-test/api/soap/mantisconnect.php username:foouser password:foopass**  
+![fileSetting](fileSetting.png)  
+  - Add global setting    
 UUID:  
-{F25B6B8F-1BA0-4BCA-A809-0C0B6F4A0CED}
+**{F25B6B8F-1BA0-4BCA-A809-0C0B6F4A0CED}**  
 configuration:  
-url:http://127.0.0.1/bugs-test/api/soap/mantisconnect.php username:foouser password:foopass
-4. In commit dialog, click "Choose issue"
-
+**url:http://127.0.0.1/bugs-test/api/soap/mantisconnect.php username:foouser password:foopass**  
+![global setting](setting.png)  
+4. In commit dialog, click "Choose issue"  
+![global setting](commit.png)
+![global setting](commit2.png)
 
 Installation from source
 ========================
