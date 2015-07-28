@@ -31,11 +31,9 @@ namespace TortoiseMantis
         private String url;
         private String username;
         private String password;
-        private String project;
         private bool valid;
 
         private const String URL_MARKER = "url";
-        private const String PROJECT_MARKER = "project";
         private const String USERNAME_MARKER = "username";
         private const String PASSWORD_MARKER = "password";
 
@@ -44,8 +42,8 @@ namespace TortoiseMantis
             url = String.Empty;
             username = String.Empty;
             password = String.Empty;
-            project = String.Empty;
             valid = false;
+            this.url = parameters.Substring(URL_MARKER.Length + 1);
 
             String[] chunks = parameters.Split(' ');
             try
@@ -56,10 +54,6 @@ namespace TortoiseMantis
                     {
                         this.url = chunk.Substring(URL_MARKER.Length + 1);
                     }
-                    if (chunk.StartsWith(PROJECT_MARKER + ":"))
-                    {
-                        this.project = chunk.Substring(PROJECT_MARKER.Length + 1);
-                    }
                     if (chunk.StartsWith(USERNAME_MARKER + ":"))
                     {
                         this.username = chunk.Substring(USERNAME_MARKER.Length + 1);
@@ -69,7 +63,7 @@ namespace TortoiseMantis
                         this.password = chunk.Substring(PASSWORD_MARKER.Length + 1);
                     }
                 }
-                if ( (url != String.Empty ) && ( username != String.Empty ) && ( password != String.Empty ) && ( project != String.Empty) )
+                if ( (url != String.Empty ) && ( username != String.Empty ) && ( password != String.Empty ) )
                 {
                     valid = true;
                 }
@@ -98,11 +92,6 @@ namespace TortoiseMantis
         public String Password
         {
             get { return this.password; }
-        }
-
-        public String Project
-        {
-            get { return this.project; }
         }
 
     }

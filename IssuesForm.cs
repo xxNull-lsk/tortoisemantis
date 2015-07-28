@@ -29,36 +29,39 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using TortoiseMantis.MantisConnectReference;
+using System.Globalization;
 
 namespace TortoiseMantis
 {
-    internal partial class IssuesForm : Form, IIssuesDisplay
+    internal partial class IssuesForm : Form
     {
+        private ObjectRef[] statusEnum;
+        private AccountData[] accountData;
+        private ProjectData[] projectData;
         private IssueHeaderData[] issueHeaders;
-        private IssueHeaderData selectedIssue;
+        private IssueHeaderData[] selectedIssue;
         private String myAccountID;
         private ConnectionSettings cs;
         private String searchString;
         private IssuesListColumnSorter issuesListColumnSorter;
-        private IDictionary<string, string> userNameMapping;
-        private IDictionary<string, string> statusMapping;
-        private IDictionary<string, Color> statusColorMapping;
+        private Plugin mplugin;
+
 
         public IssuesForm(Plugin plugin, ConnectionSettings cs)
         {
             InitializeComponent();
             issuesListColumnSorter = new IssuesListColumnSorter();
-            issuesList.ListViewItemSorter = (IComparer)issuesListColumnSorter;
+            issuesList.ListViewItemSorter = (IComparer) issuesListColumnSorter;
             this.Text += String.Format(" v{0}", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+            statusEnum = null;
             issueHeaders = null;
             selectedIssue = null;
+            accountData = null;
             myAccountID = null;
-            userNameMapping = new Dictionary<string, string>();
-            statusMapping = new Dictionary<string, string>();
             this.cs = cs;
             searchString = String.Empty;
             plugin.StatusUpdated += new Plugin.StatusUpdatedHandler(plugin_StatusUpdated);
-            InitializeStatusColorMapping();
+            mplugin = plugin;
         }
 
         void plugin_StatusUpdated(string status)
@@ -70,35 +73,47 @@ namespace TortoiseMantis
         private void IssuesForm_Load(object sender, EventArgs e)
         {
             progressBar.Value = progressBar.Minimum;
-            statusLabel.Text = "connecting...";
         }
 
         public void SetStatusMappings(ObjectRef[] statusEnum)
         {
-            statusMapping.Clear();
-            IEnumerator e = statusEnum.GetEnumerator();
-            while (e.MoveNext())
-            {
-                ObjectRef status = (ObjectRef)e.Current;
-                statusMapping.Add(status.id, status.name);
-            }
-            ListIssues();
+            this.statusEnum = statusEnum;
         }
 
         public void SetAccountData(AccountData[] accountData)
         {
-            userNameMapping.Clear();
+            this.accountData = accountData;
             IEnumerator e = accountData.GetEnumerator();
             while (e.MoveNext()) 
             {
                 AccountData account = (AccountData)e.Current;
-                userNameMapping.Add(account.id, account.name);
                 if (account.name == cs.Username)
                 {
-                    this.myAccountID = account.id;
+                    myAccountID = account.id;
+                    return;
                 }
             }
-            ListIssues();
+        }
+
+        public void SetProjectData(ProjectData[] projectData, string strDepth = "")
+        {
+            this.projectData = projectData;
+            IEnumerator e = projectData.GetEnumerator();
+            if (strDepth == "")
+            {
+                comboBoxProjects.Items.Clear();
+            }
+
+            while (e.MoveNext())
+            {
+                ProjectData project = (ProjectData)e.Current;
+                string szTmp = project.name;
+                project.name = strDepth + szTmp;
+                comboBoxProjects.Items.Add(project);
+                comboBoxProjects.DisplayMember = "name";
+                SetProjectData(project.subprojects, "  " + strDepth);
+                plugin_StatusUpdated(String.Format("总计{0}个工程", comboBoxProjects.Items.Count));
+            }
         }
 
         public void SetIssueHeaderData(IssueHeaderData[] issueHeaders)
@@ -143,13 +158,13 @@ namespace TortoiseMantis
                     ListViewItem item = new ListViewItem(issueHeaderData.id);
                     //item.UseItemStyleForSubItems = false; // allow coloring of just status
                     String owner = issueHeaderData.handler;
-                    String statusString = GetStatusString(issueHeaderData.status);
-                    if (owner != null && !this.radioButtonMyIssues.Checked)
+                    String statusString = getStatusString(issueHeaderData.status);
+                    if (owner != null)
                     {
                         statusString += String.Format(" ({0})", GetUserName(issueHeaderData.handler));
                     }
                     ListViewItem.ListViewSubItem status = item.SubItems.Add(statusString);
-                    item.BackColor = getStatusColor(GetStatusString(issueHeaderData.status));
+                    item.BackColor = getStatusColor(issueHeaderData.status);
                     item.SubItems.Add(issueHeaderData.summary);
                     item.Tag = issueHeaderData;
                     issuesList.Items.Add(item);
@@ -164,52 +179,99 @@ namespace TortoiseMantis
             issuesList.Sort();
             issuesList.EndUpdate();
             progressBar.Value = progressBar.Maximum;
-            statusLabel.Text = String.Format("showing {0} of {1} issues", issuesList.Items.Count, issueHeaders.Length);
+            statusLabel.Text = String.Format("{0}/{1}个问题", issuesList.Items.Count, issueHeaders.Length);
         }
 
-        public IssueHeaderData GetSelectedIssue()
+        public IssueHeaderData[] GetSelectedIssue()
         {
             return selectedIssue;
         }
 
         private String GetUserName(string userid)
         {
-            if (userNameMapping.ContainsKey(userid))
-                return userNameMapping[userid];
+            if (accountData == null)
+            {
+                return userid;
+            }
+            else
+            {
+                IEnumerator e = accountData.GetEnumerator();
+                while (e.MoveNext())
+                {
+                    // TODO: make O(log n)
+                    AccountData account = (AccountData)e.Current;
+                    if (account.id == userid)
+                    {
+                        return account.name;
+                    }
+                }
+            }
             return "unknown";
         }
 
-        private String GetStatusString(string statusCode)
+        private String getStatusString(string statusCode)
         {
-            if (statusMapping.ContainsKey(statusCode))
-                return statusMapping[statusCode];
+            if (statusEnum == null)
+            {
+                return statusCode;
+            }
+            else
+            {
+                IEnumerator e = statusEnum.GetEnumerator();
+                while (e.MoveNext())
+                {
+                    // TODO: make O(log n)
+                    ObjectRef status = (ObjectRef)e.Current;
+                    if (status.id == statusCode)
+                    {
+                        return status.name;
+                    }
+                }
+            }
             return "unknown";
         }
 
-        private void InitializeStatusColorMapping()
-        {
-            statusColorMapping = new Dictionary<string, Color>();
-            statusColorMapping.Add("new", Color.FromArgb(0xfc, 0xbd, 0xbd));
-            statusColorMapping.Add("feedback", Color.FromArgb(0xe3, 0xb7, 0xeb)); 
-            statusColorMapping.Add("acknowledged", Color.FromArgb(0xff, 0xcd, 0x85));
-            statusColorMapping.Add("confirmed", Color.FromArgb(0xff, 0xf4, 0x94));
-            statusColorMapping.Add("assigned", Color.FromArgb(0xc2, 0xdf, 0xff));
-            statusColorMapping.Add("resolved", Color.FromArgb(0xd2, 0xf5, 0xb0));
-            statusColorMapping.Add("closed", Color.FromArgb(0xc9, 0xcc, 0xc4));
-        }
-        
+        // TODO: make work on code
         private Color getStatusColor(string status)
         {
-            if (statusColorMapping.ContainsKey(status))
-                return statusColorMapping[status];
-            return Color.White;
+            Color color = Color.White;
+            switch (status)
+            {
+                case "10":
+                    color = Color.FromArgb(0xfc, 0xbd, 0xbd);
+                    break;
+                case "20":
+                    color = Color.FromArgb(0xe3, 0xb7, 0xeb); 
+                    break;
+                case "30":
+                    color = Color.FromArgb(0xff, 0xcd, 0x85); 
+                    break;
+                case "40":
+                    color = Color.FromArgb(0xff, 0xf4, 0x94); 
+                    break;
+                case "50":
+                    color = Color.FromArgb(0xc2, 0xdf, 0xff); 
+                    break;
+                case "80":
+                    color = Color.FromArgb(0xd2, 0xf5, 0xb0); 
+                    break;
+                case "90":
+                    color = Color.FromArgb(0xc9, 0xcc, 0xc4); 
+                    break;
+            }
+            return color;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            if (issuesList.SelectedItems.Count == 1)
+            if (issuesList.SelectedItems.Count > 0)
             {
-                selectedIssue = (IssueHeaderData)issuesList.SelectedItems[0].Tag;
+                List<IssueHeaderData> datas = new List<IssueHeaderData>();
+                foreach (ListViewItem item in issuesList.SelectedItems)
+	            {
+                    datas.Add((IssueHeaderData)item.Tag);
+	            }
+                selectedIssue = datas.ToArray();
             }
         }
 
@@ -227,11 +289,6 @@ namespace TortoiseMantis
         private void issuesList_SelectedIndexChanged(object sender, EventArgs e)
         {
             buttonOK.Enabled = (issuesList.SelectedItems.Count > 0);
-        }
-
-        private void issuesList_DoubleClick(object sender, EventArgs e)
-        {
-            buttonOK.PerformClick();
         }
 
         private void issuesList_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -253,6 +310,11 @@ namespace TortoiseMantis
                 issuesListColumnSorter.SortOrder = SortOrder.Ascending;
             }
             issuesList.Sort();
+        }
+
+        private void comboBoxProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mplugin.GetProjectIssue((ProjectData)comboBoxProjects.SelectedItem);
         }
 
     }

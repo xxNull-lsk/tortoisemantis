@@ -31,6 +31,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using System.Runtime.Remoting.Messaging;
 using Interop.BugTraqProvider;
+using System.Diagnostics;
 
 namespace TortoiseMantis
 {
@@ -40,7 +41,7 @@ namespace TortoiseMantis
     public sealed class Plugin : IBugTraqProvider
     {
 
-        private IIssuesDisplay form;
+        private IssuesForm form;
         private MantisConnectPortTypeClient client;
         private ConnectionSettings cs;
         private bool connectionErrorReported;
@@ -50,8 +51,8 @@ namespace TortoiseMantis
             ConnectionSettings cs = new ConnectionSettings(parameters);
             if (!cs.isValid())
             {
-                MessageBox.Show("invalid parameters\nexample:\nurl:http://bugserver/bugs/api/soap/mantisconnect.php username:foouser password:foopass project:fooproject",
-                    "invalid parameters", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("无效参数，请使用以下格式。\nurl:http://bugserver/bugs/api/soap/mantisconnect.php username:foouser password:foopass",
+                    "无效参数", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return true;
@@ -59,19 +60,17 @@ namespace TortoiseMantis
 
         public string GetLinkText(IntPtr hParentWnd, string parameters)
         {
-            // TODO 
-            return "Choose Issue";
+            return "选择问题";
         }
 
         public string GetCommitMessage(IntPtr hParentWnd, string parameters, string commonRoot, string[] pathList, string originalMessage)
         {
             connectionErrorReported = false;
             cs = new ConnectionSettings(parameters);
-            IssuesForm form = new IssuesForm(this, cs);
-            this.form = form;
-
+            form = new IssuesForm(this, cs);
             // WTF does this take so long?
             BasicHttpBinding binding = new BasicHttpBinding();
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
             EndpointAddress endpoint = new EndpointAddress(cs.URL);
             client = new MantisConnectPortTypeClient(binding, endpoint);
 
@@ -83,12 +82,12 @@ namespace TortoiseMantis
 
             if (form.ShowDialog() == DialogResult.OK)
             {
-                IssueHeaderData issue = form.GetSelectedIssue();
-                if (issue != null)
+                String retMessage = originalMessage;
+                foreach (IssueHeaderData issue in form.GetSelectedIssue())
                 {
-                    String retMessage = String.Format("BUGFIX: {0}\nissue {1}\n", issue.summary, issue.id);
-                    return retMessage;
+                    retMessage = retMessage + String.Format("\nFixed #{0} {1}", issue.id, issue.summary);
                 }
+                return retMessage;
             }
             return originalMessage;
         }
@@ -107,11 +106,11 @@ namespace TortoiseMantis
         {
             if (e.Error == null)
             {
-                OnStatusUpdated(String.Format("connected to MantisBT v{0}", e.Result));
+                OnStatusUpdated(String.Format("连接到MantisBT v{0}", e.Result));
             }
             else
             {
-                ReportConnectionErrorOnce(e.Error.Message);
+                ReportConnectionErrorOnce(e.Error.Message + e.Error.StackTrace);
             }
         }
 
@@ -119,35 +118,34 @@ namespace TortoiseMantis
         {
             if (e.Error == null)
             {
-                OnStatusUpdated(String.Format("loaded {0} status mappings", e.Result.Length));
+                //OnStatusUpdated(String.Format("loaded {0} status mappings", e.Result.Length));
                 form.SetStatusMappings(e.Result);
             }
             else
             {
-                ReportConnectionErrorOnce(e.Error.Message);
+                ReportConnectionErrorOnce(e.Error.Message + e.Error.StackTrace);
             }
+        }
+
+        public void GetProjectIssue(ProjectData projectData)
+        {
+            OnStatusUpdated(String.Format("正在搜索\"{0}\" ({1})", projectData.name, projectData.id));
+            client.mc_project_get_usersCompleted += new EventHandler<mc_project_get_usersCompletedEventArgs>(client_mc_project_get_usersCompleted);
+            client.mc_project_get_issue_headersCompleted += new EventHandler<mc_project_get_issue_headersCompletedEventArgs>(client_mc_project_get_issue_headersCompleted);
+            client.mc_project_get_usersAsync(cs.Username, cs.Password, projectData.id, "0");
+            client.mc_project_get_issue_headersAsync(cs.Username, cs.Password, projectData.id, "0", "0");
         }
 
         private void client_mc_projects_get_user_accessibleCompleted(object sender, mc_projects_get_user_accessibleCompletedEventArgs e)
         {
             if (e.Error == null)
             {
-                foreach (ProjectData projectData in e.Result)
-                {
-                    if (projectData.name == cs.Project)
-                    {
-                        OnStatusUpdated(String.Format("found project \"{0}\" ({1})", projectData.name, projectData.id));
-                        client.mc_project_get_usersCompleted += new EventHandler<mc_project_get_usersCompletedEventArgs>(client_mc_project_get_usersCompleted);
-                        client.mc_project_get_issue_headersCompleted += new EventHandler<mc_project_get_issue_headersCompletedEventArgs>(client_mc_project_get_issue_headersCompleted);
-                        client.mc_project_get_usersAsync(cs.Username, cs.Password, projectData.id, "0");
-                        client.mc_project_get_issue_headersAsync(cs.Username, cs.Password, projectData.id, "0", "0");
-                        return;
-                    }
-                }
+                form.SetProjectData(e.Result);
+                OnAccountDataLoaded();
             }
             else
             {
-                ReportConnectionErrorOnce(e.Error.Message);
+                ReportConnectionErrorOnce(e.Error.Message + e.Error.StackTrace);
             }
         }
 
@@ -155,13 +153,13 @@ namespace TortoiseMantis
         {
             if (e.Error == null)
             {
-                OnStatusUpdated(String.Format("read {0} usernames", e.Result.Length));
+                //OnStatusUpdated(String.Format("read {0} usernames", e.Result.Length));
                 form.SetAccountData(e.Result);
                 OnAccountDataLoaded();
             }
             else
             {
-                ReportConnectionErrorOnce(e.Error.Message);
+                ReportConnectionErrorOnce(e.Error.Message + e.Error.StackTrace);
             }
         }
 
@@ -169,13 +167,13 @@ namespace TortoiseMantis
         {
             if (e.Error == null)
             {
-                OnStatusUpdated(String.Format("found {0} issues", e.Result.Length));
+                OnStatusUpdated(String.Format("总计{0}个问题", e.Result.Length));
                 form.SetIssueHeaderData(e.Result);
                 OnIssuesLoaded();
             }
             else
             {
-                ReportConnectionErrorOnce(e.Error.Message);
+                ReportConnectionErrorOnce(e.Error.Message + e.Error.StackTrace);
             }
         }
 

@@ -80,7 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Service References\MantisConnectReference\mantisconnect.wsdl" />
+    <None Include="Service References\MantisConnectReference\mantisconnect1.wsdl" />
     <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.AccountData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -88,6 +88,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.FilterData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.HistoryData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.IssueData.datasource">
@@ -99,6 +102,9 @@
     <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.ObjectRef.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.ProfileDataSearchResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.ProjectAttachmentData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -106,6 +112,12 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.ProjectVersionData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.TagDataSearchResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.UserData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
   </ItemGroup>

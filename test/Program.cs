@@ -31,7 +31,7 @@ namespace test
     {
         static void Main(string[] args)
         {
-            String p = "url:http://127.0.0.1/bugs-test/api/soap/mantisconnect.php username:foouser password:foopass project:fooproject";
+            String p = "url:http://192.168.8.7/mantis/api/soap/mantisconnect.php username:Allan password:1234";
 
             Plugin plugin = new Plugin();
             if (plugin.ValidateParameters(System.IntPtr.Zero, p))
