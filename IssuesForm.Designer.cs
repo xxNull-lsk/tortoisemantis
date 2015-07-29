@@ -64,7 +64,7 @@ namespace TortoiseMantis
             this.issuesList = new System.Windows.Forms.ListView();
             this.columnIssue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnReportDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnLastUpdate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnSummary = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonsPanel = new System.Windows.Forms.Panel();
             this.buttonsRightPanel = new System.Windows.Forms.Panel();
@@ -79,13 +79,13 @@ namespace TortoiseMantis
             // 
             // groupBoxFilter
             // 
+            resources.ApplyResources(this.groupBoxFilter, "groupBoxFilter");
             this.groupBoxFilter.Controls.Add(this.comboBoxProjects);
             this.groupBoxFilter.Controls.Add(this.textBoxSearch);
             this.groupBoxFilter.Controls.Add(this.labelSearch);
             this.groupBoxFilter.Controls.Add(this.radioButtonMyIssues);
             this.groupBoxFilter.Controls.Add(this.label1);
             this.groupBoxFilter.Controls.Add(this.radioButtonAllIssues);
-            resources.ApplyResources(this.groupBoxFilter, "groupBoxFilter");
             this.groupBoxFilter.Name = "groupBoxFilter";
             this.groupBoxFilter.TabStop = false;
             // 
@@ -130,40 +130,40 @@ namespace TortoiseMantis
             // 
             // statusStrip1
             // 
+            resources.ApplyResources(this.statusStrip1, "statusStrip1");
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.progressBar,
             this.statusLabel});
-            resources.ApplyResources(this.statusStrip1, "statusStrip1");
             this.statusStrip1.Name = "statusStrip1";
             // 
             // progressBar
             // 
-            this.progressBar.Name = "progressBar";
             resources.ApplyResources(this.progressBar, "progressBar");
+            this.progressBar.Name = "progressBar";
             this.progressBar.Value = 50;
             // 
             // statusLabel
             // 
-            this.statusLabel.Name = "statusLabel";
             resources.ApplyResources(this.statusLabel, "statusLabel");
+            this.statusLabel.Name = "statusLabel";
             // 
             // panel1
             // 
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.issuesList);
             this.panel1.Controls.Add(this.groupBoxFilter);
             this.panel1.Controls.Add(this.buttonsPanel);
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
             // issuesList
             // 
+            resources.ApplyResources(this.issuesList, "issuesList");
             this.issuesList.AllowColumnReorder = true;
             this.issuesList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnIssue,
             this.columnStatus,
-            this.columnReportDate,
+            this.columnLastUpdate,
             this.columnSummary});
-            resources.ApplyResources(this.issuesList, "issuesList");
             this.issuesList.FullRowSelect = true;
             this.issuesList.HideSelection = false;
             this.issuesList.Name = "issuesList";
@@ -181,9 +181,9 @@ namespace TortoiseMantis
             // 
             resources.ApplyResources(this.columnStatus, "columnStatus");
             // 
-            // columnReportDate
+            // columnLastUpdate
             // 
-            resources.ApplyResources(this.columnReportDate, "columnReportDate");
+            resources.ApplyResources(this.columnLastUpdate, "columnLastUpdate");
             // 
             // columnSummary
             // 
@@ -191,29 +191,29 @@ namespace TortoiseMantis
             // 
             // buttonsPanel
             // 
-            this.buttonsPanel.Controls.Add(this.buttonsRightPanel);
             resources.ApplyResources(this.buttonsPanel, "buttonsPanel");
+            this.buttonsPanel.Controls.Add(this.buttonsRightPanel);
             this.buttonsPanel.Name = "buttonsPanel";
             // 
             // buttonsRightPanel
             // 
+            resources.ApplyResources(this.buttonsRightPanel, "buttonsRightPanel");
             this.buttonsRightPanel.Controls.Add(this.buttonOK);
             this.buttonsRightPanel.Controls.Add(this.buttonCancel);
-            resources.ApplyResources(this.buttonsRightPanel, "buttonsRightPanel");
             this.buttonsRightPanel.Name = "buttonsRightPanel";
             // 
             // buttonOK
             // 
-            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             resources.ApplyResources(this.buttonOK, "buttonOK");
+            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // buttonCancel
             // 
-            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             resources.ApplyResources(this.buttonCancel, "buttonCancel");
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
@@ -260,7 +260,7 @@ namespace TortoiseMantis
         private System.Windows.Forms.ColumnHeader columnIssue;
         private System.Windows.Forms.ColumnHeader columnStatus;
         private System.Windows.Forms.ColumnHeader columnSummary;
-        private System.Windows.Forms.ColumnHeader columnReportDate;
+        private System.Windows.Forms.ColumnHeader columnLastUpdate;
 
     }
 }

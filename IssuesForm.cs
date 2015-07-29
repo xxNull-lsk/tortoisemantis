@@ -30,6 +30,7 @@ using System.Text;
 using System.Windows.Forms;
 using TortoiseMantis.MantisConnectReference;
 using System.Globalization;
+using System.Resources;
 
 namespace TortoiseMantis
 {
@@ -45,8 +46,7 @@ namespace TortoiseMantis
         private String searchString;
         private IssuesListColumnSorter issuesListColumnSorter;
         private Plugin mplugin;
-
-
+        private ResourceManager rm;
         public IssuesForm(Plugin plugin, ConnectionSettings cs)
         {
             InitializeComponent();
@@ -64,6 +64,7 @@ namespace TortoiseMantis
             searchString = String.Empty;
             plugin.StatusUpdated += new Plugin.StatusUpdatedHandler(plugin_StatusUpdated);
             mplugin = plugin;
+            rm = new ResourceManager(typeof(IssuesForm));
         }
 
         void plugin_StatusUpdated(string status)
@@ -106,8 +107,7 @@ namespace TortoiseMantis
                 comboBoxProjects.Items.Clear();
                 ProjectData project = new ProjectData();
                 project.enabled = true;
-                project.description = "所有项目";
-                project.name = "所有项目";
+                project.name = project.description = rm.GetString("All Projects");
                 project.id = "0";
                 comboBoxProjects.Items.Add(project);
             }
@@ -120,7 +120,7 @@ namespace TortoiseMantis
                 comboBoxProjects.Items.Add(project);
                 comboBoxProjects.DisplayMember = "name";
                 SetProjectData(project.subprojects, "  " + strDepth);
-                plugin_StatusUpdated(String.Format("总计{0}个工程", comboBoxProjects.Items.Count));
+                plugin_StatusUpdated(String.Format(rm.GetString("StatusProjectCount"), comboBoxProjects.Items.Count));
             }
             if (strDepth == "")
             {
@@ -193,7 +193,7 @@ namespace TortoiseMantis
             issuesList.EndUpdate();
             issuesList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             progressBar.Value = progressBar.Maximum;
-            statusLabel.Text = String.Format("{0}/{1}个问题", issuesList.Items.Count, issueHeaders.Length);
+            statusLabel.Text = String.Format(rm.GetString("StatusIssues"), issuesList.Items.Count, issueHeaders.Length);
         }
 
         public IssueHeaderData[] GetSelectedIssue()

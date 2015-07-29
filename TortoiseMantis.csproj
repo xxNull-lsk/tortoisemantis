@@ -70,6 +70,9 @@
     <EmbeddedResource Include="IssuesForm.resx">
       <DependentUpon>IssuesForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="IssuesForm.zh-CN.resx">
+      <DependentUpon>IssuesForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="inc\Interop.BugTraqProvider\Interop.BugTraqProvider.csproj">
@@ -80,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Service References\MantisConnectReference\mantisconnect1.wsdl" />
     <None Include="Service References\MantisConnectReference\TortoiseMantis.MantisConnectReference.AccountData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>

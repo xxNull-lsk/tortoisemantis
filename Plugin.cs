@@ -32,6 +32,7 @@ using Microsoft.Win32;
 using System.Runtime.Remoting.Messaging;
 using Interop.BugTraqProvider;
 using System.Diagnostics;
+using System.Resources;
 
 namespace TortoiseMantis
 {
@@ -51,8 +52,9 @@ namespace TortoiseMantis
             ConnectionSettings cs = new ConnectionSettings(parameters);
             if (!cs.isValid())
             {
-                MessageBox.Show("无效参数，请使用以下格式。\nurl:http://bugserver/bugs/api/soap/mantisconnect.php username:foouser password:foopass",
-                    "无效参数", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ResourceManager rm = new ResourceManager(typeof(IssuesForm));
+                MessageBox.Show(rm.GetString("InvalidParameter"),
+                    rm.GetString("InvalidParameterTitle"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return true;
@@ -60,7 +62,8 @@ namespace TortoiseMantis
 
         public string GetLinkText(IntPtr hParentWnd, string parameters)
         {
-            return "选择问题";
+            ResourceManager rm = new ResourceManager(typeof(IssuesForm));
+            return rm.GetString("SelectIssues");
         }
 
         public string GetCommitMessage(IntPtr hParentWnd, string parameters, string commonRoot, string[] pathList, string originalMessage)
@@ -97,7 +100,8 @@ namespace TortoiseMantis
                     }
                     strID += String.Format("#{0}", issue.id);
                 }
-                String retMessage = originalMessage + String.Format("总计修改{0}个问题(Fixed {1})", issueDatas.Count(), strID);
+                ResourceManager rm = new ResourceManager(typeof(IssuesForm));
+                String retMessage = originalMessage + String.Format(rm.GetString("FixedIssuesHead"), issueDatas.Count(), strID);
                 foreach (IssueHeaderData issue in issueDatas)
                 {
                     retMessage += String.Format("\n#{0} {1}", issue.id, issue.summary);
@@ -112,7 +116,8 @@ namespace TortoiseMantis
             if (!connectionErrorReported)
             {
                 connectionErrorReported = true;
-                MessageBox.Show(message, "communication error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ResourceManager rm = new ResourceManager(typeof(IssuesForm));
+                MessageBox.Show(message, rm.GetString("communicationError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -121,7 +126,7 @@ namespace TortoiseMantis
         {
             if (e.Error == null)
             {
-                OnStatusUpdated(String.Format("连接到MantisBT v{0}", e.Result));
+                //OnStatusUpdated(String.Format("连接到MantisBT v{0}", e.Result));
             }
             else
             {
@@ -144,7 +149,8 @@ namespace TortoiseMantis
 
         public void GetProjectIssue(ProjectData projectData)
         {
-            OnStatusUpdated(String.Format("正在搜索\"{0}\" ({1})", projectData.name, projectData.id));
+            ResourceManager rm = new ResourceManager(typeof(IssuesForm));
+            OnStatusUpdated(String.Format(rm.GetString("StatusGettingIssues"), projectData.name, projectData.id));
             client.mc_project_get_usersCompleted += new EventHandler<mc_project_get_usersCompletedEventArgs>(client_mc_project_get_usersCompleted);
             client.mc_project_get_issue_headersCompleted += new EventHandler<mc_project_get_issue_headersCompletedEventArgs>(client_mc_project_get_issue_headersCompleted);
             client.mc_project_get_usersAsync(cs.Username, cs.Password, projectData.id, "0");
@@ -182,7 +188,8 @@ namespace TortoiseMantis
         {
             if (e.Error == null)
             {
-                OnStatusUpdated(String.Format("总计{0}个问题", e.Result.Length));
+                ResourceManager rm = new ResourceManager(typeof(IssuesForm));
+                OnStatusUpdated(String.Format(rm.GetString("StatusIssuesCount"), e.Result.Length));
                 form.SetIssueHeaderData(e.Result);
                 OnIssuesLoaded();
             }
