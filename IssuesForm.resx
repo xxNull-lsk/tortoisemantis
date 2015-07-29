@@ -117,15 +117,117 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&gt;&gt;comboBoxProjects.Name" xml:space="preserve">
+    <value>comboBoxProjects</value>
+  </data>
+  <data name="&gt;&gt;comboBoxProjects.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBoxProjects.Parent" xml:space="preserve">
+    <value>groupBoxFilter</value>
+  </data>
+  <data name="&gt;&gt;comboBoxProjects.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;textBoxSearch.Name" xml:space="preserve">
+    <value>textBoxSearch</value>
+  </data>
+  <data name="&gt;&gt;textBoxSearch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxSearch.Parent" xml:space="preserve">
+    <value>groupBoxFilter</value>
+  </data>
+  <data name="&gt;&gt;textBoxSearch.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;labelSearch.Name" xml:space="preserve">
+    <value>labelSearch</value>
+  </data>
+  <data name="&gt;&gt;labelSearch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelSearch.Parent" xml:space="preserve">
+    <value>groupBoxFilter</value>
+  </data>
+  <data name="&gt;&gt;labelSearch.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;radioButtonMyIssues.Name" xml:space="preserve">
+    <value>radioButtonMyIssues</value>
+  </data>
+  <data name="&gt;&gt;radioButtonMyIssues.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonMyIssues.Parent" xml:space="preserve">
+    <value>groupBoxFilter</value>
+  </data>
+  <data name="&gt;&gt;radioButtonMyIssues.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>groupBoxFilter</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAllIssues.Name" xml:space="preserve">
+    <value>radioButtonAllIssues</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAllIssues.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAllIssues.Parent" xml:space="preserve">
+    <value>groupBoxFilter</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAllIssues.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="groupBoxFilter.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="groupBoxFilter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 7</value>
+  </data>
+  <data name="groupBoxFilter.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>8, 7, 8, 7</value>
+  </data>
+  <data name="groupBoxFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>616, 70</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="groupBoxFilter.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="groupBoxFilter.Text" xml:space="preserve">
+    <value>过滤</value>
+  </data>
+  <data name="&gt;&gt;groupBoxFilter.Name" xml:space="preserve">
+    <value>groupBoxFilter</value>
+  </data>
+  <data name="&gt;&gt;groupBoxFilter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBoxFilter.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;groupBoxFilter.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="comboBoxProjects.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="comboBoxProjects.Location" type="System.Drawing.Point, System.Drawing">
     <value>82, 18</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="comboBoxProjects.MaxDropDownItems" type="System.Int32, mscorlib">
     <value>20</value>
   </data>
@@ -279,36 +381,6 @@
   <data name="&gt;&gt;radioButtonAllIssues.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="groupBoxFilter.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="groupBoxFilter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 7</value>
-  </data>
-  <data name="groupBoxFilter.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>8, 7, 8, 7</value>
-  </data>
-  <data name="groupBoxFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>616, 70</value>
-  </data>
-  <data name="groupBoxFilter.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="groupBoxFilter.Text" xml:space="preserve">
-    <value>过滤</value>
-  </data>
-  <data name="&gt;&gt;groupBoxFilter.Name" xml:space="preserve">
-    <value>groupBoxFilter</value>
-  </data>
-  <data name="&gt;&gt;groupBoxFilter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBoxFilter.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;groupBoxFilter.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
@@ -344,6 +416,30 @@
   </data>
   <data name="statusLabel.Text" xml:space="preserve">
     <value>some status</value>
+  </data>
+  <data name="columnIssue.Text" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="columnIssue.Width" type="System.Int32, mscorlib">
+    <value>70</value>
+  </data>
+  <data name="columnStatus.Text" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="columnStatus.Width" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
+  <data name="columnReportDate.Text" xml:space="preserve">
+    <value>最后更新时间</value>
+  </data>
+  <data name="columnReportDate.Width" type="System.Int32, mscorlib">
+    <value>98</value>
+  </data>
+  <data name="columnSummary.Text" xml:space="preserve">
+    <value>摘要</value>
+  </data>
+  <data name="columnSummary.Width" type="System.Int32, mscorlib">
+    <value>340</value>
   </data>
   <data name="issuesList.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -437,24 +533,6 @@
   </data>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="columnIssue.Text" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="columnIssue.Width" type="System.Int32, mscorlib">
-    <value>70</value>
-  </data>
-  <data name="columnStatus.Text" xml:space="preserve">
-    <value>状态</value>
-  </data>
-  <data name="columnStatus.Width" type="System.Int32, mscorlib">
-    <value>130</value>
-  </data>
-  <data name="columnSummary.Text" xml:space="preserve">
-    <value>摘要</value>
-  </data>
-  <data name="columnSummary.Width" type="System.Int32, mscorlib">
-    <value>502</value>
   </data>
   <data name="&gt;&gt;buttonOK.Name" xml:space="preserve">
     <value>buttonOK</value>
@@ -1741,6 +1819,12 @@
     <value>columnStatus</value>
   </data>
   <data name="&gt;&gt;columnStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnReportDate.Name" xml:space="preserve">
+    <value>columnReportDate</value>
+  </data>
+  <data name="&gt;&gt;columnReportDate.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;columnSummary.Name" xml:space="preserve">

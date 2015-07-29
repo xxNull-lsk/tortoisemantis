@@ -64,6 +64,7 @@ namespace TortoiseMantis
             this.issuesList = new System.Windows.Forms.ListView();
             this.columnIssue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnReportDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnSummary = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonsPanel = new System.Windows.Forms.Panel();
             this.buttonsRightPanel = new System.Windows.Forms.Panel();
@@ -160,6 +161,7 @@ namespace TortoiseMantis
             this.issuesList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnIssue,
             this.columnStatus,
+            this.columnReportDate,
             this.columnSummary});
             resources.ApplyResources(this.issuesList, "issuesList");
             this.issuesList.FullRowSelect = true;
@@ -178,6 +180,10 @@ namespace TortoiseMantis
             // columnStatus
             // 
             resources.ApplyResources(this.columnStatus, "columnStatus");
+            // 
+            // columnReportDate
+            // 
+            resources.ApplyResources(this.columnReportDate, "columnReportDate");
             // 
             // columnSummary
             // 
@@ -254,6 +260,7 @@ namespace TortoiseMantis
         private System.Windows.Forms.ColumnHeader columnIssue;
         private System.Windows.Forms.ColumnHeader columnStatus;
         private System.Windows.Forms.ColumnHeader columnSummary;
+        private System.Windows.Forms.ColumnHeader columnReportDate;
 
     }
 }

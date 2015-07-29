@@ -52,6 +52,8 @@ namespace TortoiseMantis
             InitializeComponent();
             issuesListColumnSorter = new IssuesListColumnSorter();
             issuesList.ListViewItemSorter = (IComparer) issuesListColumnSorter;
+            issuesListColumnSorter.SortColumn = 0;
+            issuesListColumnSorter.SortOrder = SortOrder.Descending;
             this.Text += String.Format(" v{0}", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
             statusEnum = null;
             issueHeaders = null;
@@ -87,7 +89,7 @@ namespace TortoiseMantis
             while (e.MoveNext()) 
             {
                 AccountData account = (AccountData)e.Current;
-                if (account.name == cs.Username)
+                if (account.name.ToLower() == cs.Username.ToLower())
                 {
                     myAccountID = account.id;
                     return;
@@ -102,6 +104,12 @@ namespace TortoiseMantis
             if (strDepth == "")
             {
                 comboBoxProjects.Items.Clear();
+                ProjectData project = new ProjectData();
+                project.enabled = true;
+                project.description = "所有项目";
+                project.name = "所有项目";
+                project.id = "0";
+                comboBoxProjects.Items.Add(project);
             }
 
             while (e.MoveNext())
@@ -113,6 +121,10 @@ namespace TortoiseMantis
                 comboBoxProjects.DisplayMember = "name";
                 SetProjectData(project.subprojects, "  " + strDepth);
                 plugin_StatusUpdated(String.Format("总计{0}个工程", comboBoxProjects.Items.Count));
+            }
+            if (strDepth == "")
+            {
+                comboBoxProjects.SelectedIndex = 0;
             }
         }
 
@@ -165,6 +177,7 @@ namespace TortoiseMantis
                     }
                     ListViewItem.ListViewSubItem status = item.SubItems.Add(statusString);
                     item.BackColor = getStatusColor(issueHeaderData.status);
+                    item.SubItems.Add(issueHeaderData.last_updated.ToString("yyyy-MM-dd HH:mm"));
                     item.SubItems.Add(issueHeaderData.summary);
                     item.Tag = issueHeaderData;
                     issuesList.Items.Add(item);
@@ -178,6 +191,7 @@ namespace TortoiseMantis
             }
             issuesList.Sort();
             issuesList.EndUpdate();
+            issuesList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             progressBar.Value = progressBar.Maximum;
             statusLabel.Text = String.Format("{0}/{1}个问题", issuesList.Items.Count, issueHeaders.Length);
         }
@@ -231,7 +245,6 @@ namespace TortoiseMantis
             return "unknown";
         }
 
-        // TODO: make work on code
         private Color getStatusColor(string status)
         {
             Color color = Color.White;

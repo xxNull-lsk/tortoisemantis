@@ -82,10 +82,25 @@ namespace TortoiseMantis
 
             if (form.ShowDialog() == DialogResult.OK)
             {
-                String retMessage = originalMessage;
-                foreach (IssueHeaderData issue in form.GetSelectedIssue())
+                IssueHeaderData[] issueDatas = form.GetSelectedIssue();
+                if (originalMessage != string.Empty &&
+                    originalMessage.Last() != '\n')
                 {
-                    retMessage = retMessage + String.Format("\nFixed #{0} {1}", issue.id, issue.summary);
+                    originalMessage += "\n";
+                }
+                string strID = "";
+                foreach (IssueHeaderData issue in issueDatas)
+                {
+                    if (strID != string.Empty)
+                    {
+                        strID += ", ";
+                    }
+                    strID += String.Format("#{0}", issue.id);
+                }
+                String retMessage = originalMessage + String.Format("总计修改{0}个问题(Fixed {1})", issueDatas.Count(), strID);
+                foreach (IssueHeaderData issue in issueDatas)
+                {
+                    retMessage += String.Format("\n#{0} {1}", issue.id, issue.summary);
                 }
                 return retMessage;
             }
@@ -133,7 +148,7 @@ namespace TortoiseMantis
             client.mc_project_get_usersCompleted += new EventHandler<mc_project_get_usersCompletedEventArgs>(client_mc_project_get_usersCompleted);
             client.mc_project_get_issue_headersCompleted += new EventHandler<mc_project_get_issue_headersCompletedEventArgs>(client_mc_project_get_issue_headersCompleted);
             client.mc_project_get_usersAsync(cs.Username, cs.Password, projectData.id, "0");
-            client.mc_project_get_issue_headersAsync(cs.Username, cs.Password, projectData.id, "0", "0");
+            client.mc_project_get_issue_headersAsync(cs.Username, cs.Password, projectData.id, "0", "5000");
         }
 
         private void client_mc_projects_get_user_accessibleCompleted(object sender, mc_projects_get_user_accessibleCompletedEventArgs e)
