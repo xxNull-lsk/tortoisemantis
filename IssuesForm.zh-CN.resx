@@ -1306,4 +1306,7 @@
   <data name="StatusProjectCount" xml:space="preserve">
     <value>总计{0}个工程</value>
   </data>
+  <data name="FixedIssuesHead" xml:space="preserve">
+    <value>总计修改{0}个问题 (Fixed {1})</value>
+  </data>
 </root>
