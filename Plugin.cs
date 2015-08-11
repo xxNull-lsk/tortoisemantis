@@ -101,7 +101,7 @@ namespace TortoiseMantis
                     strID += String.Format("#{0}", issue.id);
                 }
                 ResourceManager rm = new ResourceManager(typeof(IssuesForm));
-                String retMessage = originalMessage + String.Format(rm.GetString("FixedIssuesHead"), issueDatas.Count(), strID);
+                String retMessage = originalMessage + String.Format(rm.GetString("FixedIssuesHead"), issueDatas.Count(), strID) + "\n";
                 foreach (IssueHeaderData issue in issueDatas)
                 {
                     retMessage += String.Format("\n#{0} {1}", issue.id, issue.summary);
